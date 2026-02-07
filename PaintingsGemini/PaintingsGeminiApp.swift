@@ -9,13 +9,7 @@ import SwiftUI
 
 @main
 struct PaintingsGeminiApp: App {
-    @State private var viewModel: PaintingsGeminiViewModel
-
-    init() {
-        let viewModel = PaintingsGeminiViewModel()
-        viewModel.load()
-        _viewModel = State(initialValue: viewModel)
-    }
+    @State private var viewModel = PaintingsGeminiViewModel()
 
     var body: some Scene {
         WindowGroup {

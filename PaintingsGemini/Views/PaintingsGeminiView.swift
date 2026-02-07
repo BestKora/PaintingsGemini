@@ -40,6 +40,10 @@ final class PaintingsGeminiViewModel {
             .sorted { $0.name < $1.name}
     }
 
+    init() {
+        load()
+    }
+
     func load() {
         do {
             paintings = try PaintingsGeminiLoader.loadFromBundle()
