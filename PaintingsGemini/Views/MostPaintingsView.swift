@@ -39,7 +39,12 @@ struct MostExpensivePaintingsView: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     ForEach(topPaintings) { painting in
-                        ArtWorkView(painting: painting)
+                        VStack(alignment: .leading, spacing: 6) {
+                            ArtWorkView(painting: painting)
+                            Text("Estimated value: \(painting.estimateValue)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
