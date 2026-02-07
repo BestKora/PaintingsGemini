@@ -9,6 +9,7 @@ import SwiftUI
 struct ArtWorkView: View {
     let painting: Art //PaintingGemini
     @Environment(\.displayScale) private var displayScale
+    @State private var reloadToken = UUID()
     
     var body: some View {
         VStack  (alignment: .leading){
@@ -27,8 +28,9 @@ struct ArtWorkView: View {
                 Text(painting.style)
                     .foregroundStyle(.secondary)
             }
-            if let url = URL (string: painting.imageURL)/*painting.URLImage*/ {
-                if let cached = ImageStringCache.shared.image (for: painting.title + painting.artist) {
+            let cacheKey = painting.title + painting.artist
+            if let url = URL(string: painting.imageURL)/*painting.URLImage*/ {
+                if let cached = ImageStringCache.shared.image(for: cacheKey) {
                     Text("--- Cached Image ---")
                     Image(uiImage: cached)
                         .resizable()
@@ -52,18 +54,25 @@ struct ArtWorkView: View {
                                     let renderer = ImageRenderer(content: image)
                                     renderer.scale = displayScale
                                     if let uiImage = renderer.uiImage {
-                                        ImageStringCache.shared.store(uiImage, for: painting.title + painting.artist)
+                                        ImageStringCache.shared.store(uiImage, for: cacheKey)
                                     }
                                 }
                         case .failure:
-                            Image(systemName: "photo")
-                                .frame(width: 80, height: 80)
-                                .foregroundStyle(.secondary)
+                            VStack(spacing: 8) {
+                                Image(systemName: "photo")
+                                    .frame(width: 80, height: 80)
+                                    .foregroundStyle(.secondary)
+                                Button("Retry") {
+                                    reloadToken = UUID()
+                                }
+                                .buttonStyle(.bordered)
+                            }
                             
                         @unknown default:
                             EmptyView()
                         }
                     }
+                    .id(reloadToken)
                 }
             }
         }
