@@ -50,8 +50,7 @@ final class PaintingsGeminiViewModel {
 }
 
 struct PaintingsGeminiView: View {
-  
-    @State var vm = PaintingsGeminiViewModel()
+    @State var viewModel: PaintingsGeminiViewModel
     @State private var searchText = ""
     @State var selectedArtist = "Claude Monet"
 
@@ -76,7 +75,7 @@ struct PaintingsGeminiView: View {
         }
         .padding(.horizontal)
         .onAppear {
-            vm.load()
+            viewModel.load()
             ImageStringCache.shared.clearCache()
         }
         .navigationTitle("Paintings Gemini")
@@ -88,9 +87,9 @@ struct PaintingsGeminiView: View {
     }
     var filteredArtists: [ArtistItem]  {
         if searchText.isEmpty {
-            return vm.artistItems
+            return viewModel.artistItems
         } else {
-            return vm.artistItems.filter {
+            return viewModel.artistItems.filter {
                 $0.name.localizedCaseInsensitiveContains(searchText)
             }
         }
@@ -98,9 +97,9 @@ struct PaintingsGeminiView: View {
     
     var filteredPaintings: [PaintingGemini]  {
         if selectedArtist.isEmpty {
-            return vm.paintings
+            return viewModel.paintings
         } else {
-            return vm.paintings.filter {
+            return viewModel.paintings.filter {
                 $0.artist.localizedCaseInsensitiveContains(selectedArtist)
             }
         }
@@ -108,5 +107,5 @@ struct PaintingsGeminiView: View {
 }
 
 #Preview {
-    PaintingsGeminiView()
+    PaintingsGeminiView(viewModel: PaintingsGeminiViewModel())
 }
