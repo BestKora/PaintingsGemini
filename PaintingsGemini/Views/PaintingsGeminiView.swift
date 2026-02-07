@@ -50,7 +50,7 @@ final class PaintingsGeminiViewModel {
 }
 
 struct PaintingsGeminiView: View {
-    @State var viewModel: PaintingsGeminiViewModel
+    @Bindable var viewModel: PaintingsGeminiViewModel
     @State private var searchText = ""
     @State var selectedArtist = "Claude Monet"
 
@@ -75,7 +75,6 @@ struct PaintingsGeminiView: View {
         }
         .padding(.horizontal)
         .onAppear {
-            viewModel.load()
             ImageStringCache.shared.clearCache()
         }
         .navigationTitle("Paintings Gemini")

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MostPaintingsView: View {
-    @State private var viewModel = PaintingsGeminiViewModel()
+    @Bindable var viewModel: PaintingsGeminiViewModel
 
     var body: some View {
         NavigationStack {
@@ -18,7 +18,7 @@ struct MostPaintingsView: View {
                         Label("Artists", systemImage: "person.3.fill")
                     }
 
-                MostExpensivePaintingsView()
+                MostExpensivePaintingsView(viewModel: viewModel)
                     .tabItem {
                         Label("Expensive Paintings", systemImage: "dollarsign.circle")
                     }
@@ -28,7 +28,7 @@ struct MostPaintingsView: View {
 }
 
 struct MostExpensivePaintingsView: View {
-    @State var vm = PaintingsGeminiViewModel()
+    @Bindable var viewModel: PaintingsGeminiViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -46,19 +46,15 @@ struct MostExpensivePaintingsView: View {
                 .padding(.horizontal)
             }
         }
-        .onAppear {
-            vm.load()
-            ImageStringCache.shared.clearCache()
-        }
         .navigationTitle("Most Expensive")
     }
 
     private var topPaintings: [PaintingGemini] {
-        let sorted = vm.paintings.sorted { $0.cost > $1.cost }
+        let sorted = viewModel.paintings.sorted { $0.cost > $1.cost }
         return Array(sorted.prefix(10))
     }
 }
 
 #Preview {
-    MostPaintingsView()
+    MostPaintingsView(viewModel: PaintingsGeminiViewModel())
 }
