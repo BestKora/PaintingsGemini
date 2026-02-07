@@ -8,34 +8,20 @@
 import SwiftUI
 
 struct MostPaintingsView: View {
-    enum Mode: String, CaseIterable, Identifiable {
-        case browse = "Browse"
-        case mostExpensive = "Most Expensive"
-
-        var id: String { rawValue }
-    }
-
-    @State private var mode: Mode = .browse
+    @State private var viewModel = PaintingsGeminiViewModel()
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 12) {
-                Picker("View", selection: $mode) {
-                    ForEach(Mode.allCases) { mode in
-                        Text(mode.rawValue).tag(mode)
+            TabView {
+                PaintingsGeminiView(viewModel: viewModel)
+                    .tabItem {
+                        Label("Artists", systemImage: "person.3.fill")
                     }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
 
-                Group {
-                    switch mode {
-                    case .browse:
-                        PaintingsGeminiView()
-                    case .mostExpensive:
-                        MostExpensivePaintingsView()
+                MostExpensivePaintingsView()
+                    .tabItem {
+                        Label("Expensive Paintings", systemImage: "dollarsign.circle")
                     }
-                }
             }
         }
     }
