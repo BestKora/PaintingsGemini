@@ -11,7 +11,7 @@ import SwiftUI
 struct PaintingsGeminiApp: App {
     var body: some Scene {
         WindowGroup {
-            PaintingsGeminiView()
+            MostPaintingsView()
         }
     }
 }
