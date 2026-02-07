@@ -41,6 +41,7 @@ final class PaintingsGeminiViewModel {
     }
 
     init() {
+        ImageStringCache.shared.clearCache()
         load()
     }
 
@@ -78,9 +79,6 @@ struct PaintingsGeminiView: View {
             }
         }
         .padding(.horizontal)
-        .onAppear {
-            ImageStringCache.shared.clearCache()
-        }
         .navigationTitle("Paintings Gemini")
         .onChange(of: filteredArtists) {
             if  !filteredArtists.isEmpty && !filteredArtists.map({$0.name}).contains(selectedArtist) {
