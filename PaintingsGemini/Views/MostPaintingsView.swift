@@ -22,6 +22,11 @@ struct MostPaintingsView: View {
                     .tabItem {
                         Label("Expensive Paintings", systemImage: "dollarsign.circle")
                     }
+
+                TitlePaintingsView(viewModel: viewModel)
+                    .tabItem {
+                        Label("Titles", systemImage: "text.magnifyingglass")
+                    }
             }
         }
     }
