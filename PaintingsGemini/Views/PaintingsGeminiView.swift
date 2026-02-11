@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct PaintingsGeminiView: View {
+   var isSelected : Bool
+    
     @Bindable var viewModel: PaintingsGeminiViewModel
     @State private var searchText = ""
     @State var selectedArtist = "Claude Monet"
+    @FocusState private var isArtistFieldFocused: Bool
 
     var body: some View {
         VStack {
@@ -18,7 +21,13 @@ struct PaintingsGeminiView: View {
             TextField("Search artist", text: $searchText, axis: .vertical)
                 .font(.headline)
                 .textFieldStyle(.roundedBorder)
+                .focused($isArtistFieldFocused)
+                .textInputAutocapitalization(.words)
+                .autocorrectionDisabled()
                 .submitLabel(.send)
+        /*        .onSubmit {
+                    isArtistFieldFocused = false
+                } */
             ArtistPickerView(filteredArtists: filteredArtists, selectedArtist: $selectedArtist)
         /*    List (filteredPaintings /*vm.paintings*/) { painting in
                 ArtWorkView(painting: painting)*/
@@ -37,6 +46,14 @@ struct PaintingsGeminiView: View {
             if  !filteredArtists.isEmpty && !filteredArtists.map({$0.name}).contains(selectedArtist) {
                 selectedArtist = filteredArtists.first!.name
             }
+        }
+        .onChange(of: isSelected) { _, newValue in
+                    if newValue {
+                        // Tab was selected
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            isArtistFieldFocused = true
+                        }
+                    }
         }
     }
     var filteredArtists: [ArtistItem]  {
@@ -61,5 +78,5 @@ struct PaintingsGeminiView: View {
 }
 
 #Preview {
-    PaintingsGeminiView(viewModel: PaintingsGeminiViewModel())
+    PaintingsGeminiView(isSelected: true, viewModel: PaintingsGeminiViewModel())
 }

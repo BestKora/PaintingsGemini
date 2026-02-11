@@ -9,24 +9,28 @@ import SwiftUI
 
 struct MostPaintingsView: View {
     @Bindable var viewModel: PaintingsGeminiViewModel
+    @State private var selectedTab = 0
 
     var body: some View {
         NavigationStack {
-            TabView {
-                PaintingsGeminiView(viewModel: viewModel)
+            TabView (selection: $selectedTab) {
+                PaintingsGeminiView(isSelected: selectedTab == 0, viewModel: viewModel)
                     .tabItem {
                         Label("Artists", systemImage: "person.3.fill")
                     }
+                    .tag(0)
 
                 MostExpensivePaintingsView(viewModel: viewModel)
                     .tabItem {
                         Label("Expensive Paintings", systemImage: "dollarsign.circle")
                     }
+                    .tag(1)
 
-                TitlePaintingsView(viewModel: viewModel)
+                TitlePaintingsView(isSelected: selectedTab == 2,viewModel: viewModel)
                     .tabItem {
                         Label("Titles", systemImage: "text.magnifyingglass")
                     }
+                    .tag(2)
             }
         }
     }
