@@ -9,7 +9,6 @@ import FoundationModels
 
 @Generable
 struct PaintingGemini: Decodable, Identifiable, Equatable , Art {
-  let id = UUID()
     
   let title: String
   let artist: String
@@ -19,6 +18,8 @@ struct PaintingGemini: Decodable, Identifiable, Equatable , Art {
   let location: String
   let estimateValue: String
   let imageURL: String
+    
+  var id:String {title + artist}
     
     // Исключаем id из декодирования
     private enum CodingKeys: String, CodingKey {

@@ -25,17 +25,18 @@ struct TitlePaintingsView: View {
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
                 .submitLabel(.search)
-                .onSubmit {
+            /*    .onSubmit {
                    isTitleFieldFocused = false
-                }
-
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
+                }*/
+            List (filteredPaintings ) { painting in
+                ArtWorkView(painting: painting)
+         /*   ScrollView {
+              LazyVStack(alignment: .leading, spacing: 16) {
                     ForEach(filteredPaintings) { painting in
                         ArtWorkView(painting: painting)
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)*/
             }
         }
         .padding(.horizontal)
