@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct PaintingsGeminiView: View {
-   var isSelected : Bool
+    var isSelected: Bool
     
     @Bindable var viewModel: PaintingsGeminiViewModel
     @State private var searchText = ""
-    @State var selectedArtist = "Claude Monet"
+    @State private var selectedArtist = "Claude Monet"
     @FocusState private var isArtistFieldFocused: Bool
 
     var body: some View {
@@ -26,7 +26,7 @@ struct PaintingsGeminiView: View {
                 .autocorrectionDisabled()
                 .submitLabel(.send)
             ArtistPickerView(filteredArtists: filteredArtists, selectedArtist: $selectedArtist)
-            List (filteredPaintings ) { painting in
+            List(filteredPaintings) { painting in
                 ArtWorkView(painting: painting)
         /*    ScrollView {
                          LazyVStack(alignment: .leading, spacing: 16) {
@@ -40,36 +40,39 @@ struct PaintingsGeminiView: View {
         .padding(.horizontal)
         .navigationTitle("Paintings Gemini")
         .onChange(of: filteredArtists) {
-            if  !filteredArtists.isEmpty && !filteredArtists.map({$0.name}).contains(selectedArtist) {
-                selectedArtist = filteredArtists.first!.name
+            if !filteredArtists.isEmpty,
+               !filteredArtists.map(\.name).contains(selectedArtist),
+               let firstArtist = filteredArtists.first {
+                selectedArtist = firstArtist.name
             }
         }
         .onChange(of: isSelected) { _, newValue in
-                    if newValue {
-                        // Tab was selected
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            isArtistFieldFocused = true
-                        }
-                    }
+            if newValue {
+                Task { @MainActor in
+                    try? await Task.sleep(for: .milliseconds(100))
+                    isArtistFieldFocused = true
+                }
+            }
         }
     }
-    var filteredArtists: [ArtistItem]  {
+
+    var filteredArtists: [ArtistItem] {
         if searchText.isEmpty {
             return viewModel.artistItems
-        } else {
-            return viewModel.artistItems.filter {
-                $0.name.localizedCaseInsensitiveContains(searchText)
-            }
+        }
+
+        return viewModel.artistItems.filter {
+            $0.name.localizedStandardContains(searchText)
         }
     }
-    
-    var filteredPaintings: [PaintingGemini]  {
+
+    var filteredPaintings: [PaintingGemini] {
         if selectedArtist.isEmpty {
             return viewModel.paintings
-        } else {
-            return viewModel.paintings.filter {
-                $0.artist.localizedCaseInsensitiveContains(selectedArtist)
-            }
+        }
+
+        return viewModel.paintings.filter {
+            $0.artist.localizedStandardContains(selectedArtist)
         }
     }
 }

@@ -48,7 +48,7 @@ struct ArtWorkView: View {
                                 .resizable()
                                 .scaledToFill()
                                 .clipped()
-                                .cornerRadius(8)
+                                .clipShape(.rect(cornerRadius: 8))
                                 .onAppear {
                                     // Render SwiftUI Image to UIImage before caching
                                     let renderer = ImageRenderer(content: image)
