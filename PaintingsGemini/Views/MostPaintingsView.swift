@@ -30,44 +30,6 @@ struct MostPaintingsView: View {
     }
 }
 
-struct MostExpensivePaintingsView: View {
-    @Bindable var viewModel: PaintingsGeminiViewModel
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Most expensive paintings from the local collection.")
-                .font(.headline)
-                .padding(.horizontal)
-            List (topPaintings) { painting in
-                VStack {
-                    ArtWorkView(painting: painting)
-                    Text("Estimated value: \(painting.estimateValue)")
-                        .font(.headline)
-                        .foregroundStyle(.blue)
-                }
-           /* ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    ForEach(topPaintings) { painting in
-                        VStack(alignment: .leading, spacing: 6) {
-                            ArtWorkView(painting: painting)
-                            Text("Estimated value: \(painting.estimateValue)")
-                                .font(.headline)
-                                .foregroundStyle(.blue)
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)*/
-            }
-        }
-        .padding(.horizontal)
-        .navigationTitle("Most Expensive")
-    }
-
-    private var topPaintings: [PaintingGemini] {
-        let sorted = viewModel.paintings.sorted { $0.cost > $1.cost }
-        return Array(sorted.prefix(50))
-    }
-}
 
 #Preview {
     MostPaintingsView(viewModel: PaintingsGeminiViewModel())

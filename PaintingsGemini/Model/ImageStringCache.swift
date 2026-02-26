@@ -23,7 +23,7 @@ class ImageStringCache {
     // MARK: - Clear the entire cache
      func clearCache() {
             cache.removeAllObjects()
-            print("Image cache cleared – all images removed from memory")
+           // print("Image cache cleared – all images removed from memory")
         }
         
         // Optional: Clear only one specific image

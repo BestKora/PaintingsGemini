@@ -7,7 +7,8 @@
 import Foundation
 
 struct ArtistItem: Identifiable, Hashable {
-    let id = UUID()
     let name: String
-    let count: Int 
+    let count: Int
+    
+    var id:String {name}
 }

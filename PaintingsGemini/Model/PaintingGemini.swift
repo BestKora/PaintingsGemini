@@ -47,7 +47,6 @@ struct PaintingGemini: Decodable, Identifiable, Equatable , Art {
      
         if let range = estimateValue.range(of: "Million") {
             let beforeMillion = estimateValue[..<range.lowerBound].trimmingCharacters(in: .whitespaces)
-        //    print(beforeMillion) // Output: "$250"
             let usCurrency = formatter.number(from: beforeMillion) ?? 0.0
             return Int(truncating: usCurrency)
         }
