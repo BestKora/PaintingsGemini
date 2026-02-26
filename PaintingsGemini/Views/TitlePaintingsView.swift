@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TitlePaintingsView: View {
-    var isSelected : Bool
+    var isSelected: Bool
     
     @Bindable var viewModel: PaintingsGeminiViewModel
     @State private var titleQuery = ""
@@ -28,7 +28,7 @@ struct TitlePaintingsView: View {
             /*    .onSubmit {
                    isTitleFieldFocused = false
                 }*/
-            List (filteredPaintings ) { painting in
+            List(filteredPaintings) { painting in
                 ArtWorkView(painting: painting)
          /*   ScrollView {
               LazyVStack(alignment: .leading, spacing: 16) {
@@ -44,7 +44,8 @@ struct TitlePaintingsView: View {
         .onChange(of: isSelected) { _, newValue in
                     if newValue {
                         // Tab was selected
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        Task { @MainActor in
+                            try? await Task.sleep(for: .milliseconds(100))
                             isTitleFieldFocused = true
                         }
                     }
@@ -56,7 +57,7 @@ struct TitlePaintingsView: View {
             return viewModel.paintings
         }
         return viewModel.paintings.filter {
-            $0.title.localizedCaseInsensitiveContains(titleQuery)
+            $0.title.localizedStandardContains(titleQuery)
         }
     }
 }

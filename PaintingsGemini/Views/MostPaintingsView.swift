@@ -13,24 +13,18 @@ struct MostPaintingsView: View {
 
     var body: some View {
         NavigationStack {
-            TabView (selection: $selectedTab) {
-                PaintingsGeminiView(isSelected: selectedTab == 0, viewModel: viewModel)
-                    .tabItem {
-                        Label("Artists", systemImage: "person.3.fill")
-                    }
-                    .tag(0)
+            TabView(selection: $selectedTab) {
+                Tab("Artists", systemImage: "person.3.fill", value: 0) {
+                    PaintingsGeminiView(isSelected: selectedTab == 0, viewModel: viewModel)
+                }
 
-                MostExpensivePaintingsView(viewModel: viewModel)
-                    .tabItem {
-                        Label("Expensive Paintings", systemImage: "dollarsign.circle")
-                    }
-                    .tag(1)
+                Tab("Expensive Paintings", systemImage: "dollarsign.circle", value: 1) {
+                    MostExpensivePaintingsView(viewModel: viewModel)
+                }
 
-                TitlePaintingsView(isSelected: selectedTab == 2,viewModel: viewModel)
-                    .tabItem {
-                        Label("Titles", systemImage: "text.magnifyingglass")
-                    }
-                    .tag(2)
+                Tab("Titles", systemImage: "text.magnifyingglass", value: 2) {
+                    TitlePaintingsView(isSelected: selectedTab == 2, viewModel: viewModel)
+                }
             }
         }
     }
