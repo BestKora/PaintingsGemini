@@ -24,16 +24,26 @@ struct PaintingsGeminiView: View {
                 .focused($isArtistFieldFocused)
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
-                .submitLabel(.send)
+                .submitLabel(.search)
+                .onSubmit {
+                    if let first = filteredArtists.first {
+                        selectedArtist = first.name
+                    }
+                }
+            
             if filteredArtists.map({$0.name}).contains(selectedArtist) {
                 ArtistPickerView(filteredArtists: filteredArtists, selectedArtist: $selectedArtist)
             }
-            List(filteredPaintings) { painting in
-                ArtWorkView(painting: painting)
+            if filteredPaintings.isEmpty {
+                ContentUnavailableView("No paintings", systemImage: "photo.on.rectangle.angled", description: Text("Try another artist or clear search"))
+            } else {
+                List(filteredPaintings) { painting in
+                    ArtWorkView(painting: painting)
+                }
             }
         }
         .padding(.horizontal)
-        .navigationTitle("Paintings Gemini")
+        .navigationTitle("Paintings by Artist")
         .onChange(of: filteredArtists) {
             if !filteredArtists.isEmpty,
                !filteredArtists.map(\.name).contains(selectedArtist),
