@@ -25,16 +25,11 @@ struct PaintingsGeminiView: View {
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
                 .submitLabel(.send)
-            ArtistPickerView(filteredArtists: filteredArtists, selectedArtist: $selectedArtist)
+            if filteredArtists.map({$0.name}).contains(selectedArtist) {
+                ArtistPickerView(filteredArtists: filteredArtists, selectedArtist: $selectedArtist)
+            }
             List(filteredPaintings) { painting in
                 ArtWorkView(painting: painting)
-        /*    ScrollView {
-                         LazyVStack(alignment: .leading, spacing: 16) {
-                             ForEach(filteredPaintings) { painting in
-                                 ArtWorkView(painting: painting)
-                             }
-                         }
-                         .frame(maxWidth: .infinity, alignment: .leading)*/
             }
         }
         .padding(.horizontal)
