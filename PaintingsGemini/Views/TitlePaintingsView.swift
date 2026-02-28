@@ -25,8 +25,13 @@ struct TitlePaintingsView: View {
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
                 .submitLabel(.search)
-            List(filteredPaintings) { painting in
-                ArtWorkView(painting: painting)
+           
+            if filteredPaintings.isEmpty {
+                ContentUnavailableView("No paintings", systemImage: "photo.on.rectangle.angled", description: Text("Try another search or clear search"))
+            } else {
+                List(filteredPaintings) { painting in
+                    ArtWorkView(painting: painting)
+                }
             }
         }
         .padding(.horizontal)
