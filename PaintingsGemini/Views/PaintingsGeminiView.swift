@@ -12,7 +12,7 @@ struct PaintingsGeminiView: View {
     
     @Bindable var viewModel: PaintingsGeminiViewModel
     @State private var searchText = ""
-    @State private var selectedArtist = "Claude Monet"
+    @State private var selectedArtist = ""
     @FocusState private var isArtistFieldFocused: Bool
 
     var body: some View {
@@ -44,6 +44,11 @@ struct PaintingsGeminiView: View {
         }
         .padding(.horizontal)
         .navigationTitle("Paintings by Artist")
+        .onAppear {
+            if selectedArtist.isEmpty, let first = viewModel.artistItems.first?.name {
+                selectedArtist = first
+            }
+        }
         .onChange(of: filteredArtists) {
             if !filteredArtists.isEmpty,
                !filteredArtists.map(\.name).contains(selectedArtist),
