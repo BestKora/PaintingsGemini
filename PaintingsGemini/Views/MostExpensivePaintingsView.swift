@@ -17,9 +17,13 @@ struct MostExpensivePaintingsView: View {
             List (topPaintings) { painting in
                 VStack {
                     ArtWorkView(painting: painting)
-                    Text("Estimated value: \(painting.estimateValue)")
+                  //  Text("Estimated value: \(painting.estimateValue)")
+                    Text("Estimated value: \(painting.costString)")
                         .font(.headline)
                         .foregroundStyle(.blue)
+                    if let soldYear = painting.soldYear {
+                        Text("Sold year: \(String(soldYear))")
+                    }
                 }
             }
         }
