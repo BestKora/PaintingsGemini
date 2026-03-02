@@ -11,14 +11,15 @@ struct PaintingsGeminiView: View {
     var isSelected: Bool
     
     @Bindable var viewModel: PaintingsGeminiViewModel
-    @State private var searchText = ""
-    @State private var selectedArtist = ""
     @FocusState private var isArtistFieldFocused: Bool
 
     var body: some View {
         VStack {
+            let artists = viewModel.filteredArtists(searchText: viewModel.debouncedSearchText)
+            let paintings = viewModel.filteredPaintings(selectedArtist: viewModel.selectedArtist)
+
             Text("Choose the artist to fetch paintings from local DB.")
-            TextField("Search artist", text: $searchText, axis: .vertical)
+            TextField("Search artist", text: $viewModel.searchText, axis: .vertical)
                 .font(.headline)
                 .textFieldStyle(.roundedBorder)
                 .focused($isArtistFieldFocused)
@@ -26,18 +27,20 @@ struct PaintingsGeminiView: View {
                 .autocorrectionDisabled()
                 .submitLabel(.search)
                 .onSubmit {
-                    if let first = filteredArtists.first {
-                        selectedArtist = first.name
+                    if let first = artists.first {
+                        viewModel.selectedArtist = first.name
                     }
                 }
             
-            if filteredArtists.map({$0.name}).contains(selectedArtist) {
-                ArtistPickerView(filteredArtists: filteredArtists, selectedArtist: $selectedArtist)
+            if artists.map({ $0.name }).contains(viewModel.selectedArtist) {
+                ArtistPickerView(filteredArtists: artists, selectedArtist: $viewModel.selectedArtist)
+            } else {
+                Text(viewModel.selectedArtist)
             }
-            if filteredPaintings.isEmpty {
+            if paintings.isEmpty {
                 ContentUnavailableView("No paintings", systemImage: "photo.on.rectangle.angled", description: Text("Try another artist or clear search"))
             } else {
-                List(filteredPaintings) { painting in
+                List(paintings) { painting in
                     ArtWorkView(painting: painting)
                 }
             }
@@ -45,16 +48,15 @@ struct PaintingsGeminiView: View {
         .padding(.horizontal)
         .navigationTitle("Paintings by Artist")
         .onAppear {
-            if selectedArtist.isEmpty, let first = viewModel.artistItems.first?.name {
-                selectedArtist = first
+            if viewModel.selectedArtist.isEmpty, let first = viewModel.artistItems.first?.name {
+                viewModel.selectedArtist = first
             }
         }
-        .onChange(of: filteredArtists) {
-            if !filteredArtists.isEmpty,
-               !filteredArtists.map(\.name).contains(selectedArtist),
-               let firstArtist = filteredArtists.first {
-                selectedArtist = firstArtist.name
-            }
+        .onChange(of: viewModel.debouncedSearchText) { _, _ in
+            viewModel.ensureValidSelection()
+        }
+        .onChange(of: viewModel.artistItems) { _, _ in
+            viewModel.ensureValidSelection()
         }
         .onChange(of: isSelected) { _, newValue in
             if newValue {
@@ -63,26 +65,6 @@ struct PaintingsGeminiView: View {
                     isArtistFieldFocused = true
                 }
             }
-        }
-    }
-
-    var filteredArtists: [ArtistItem] {
-        if searchText.isEmpty {
-            return viewModel.artistItems
-        }
-
-        return viewModel.artistItems.filter {
-            $0.name.localizedStandardContains(searchText)
-        }
-    }
-
-    var filteredPaintings: [PaintingGemini] {
-        if selectedArtist.isEmpty {
-            return viewModel.paintings
-        }
-
-        return viewModel.paintings.filter {
-            $0.artist.localizedStandardContains(selectedArtist)
         }
     }
 }
