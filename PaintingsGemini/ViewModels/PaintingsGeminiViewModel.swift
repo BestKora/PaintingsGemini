@@ -8,22 +8,23 @@
 import SwiftUI
 
 enum PaintingsGeminiLoader {
-    static func loadFromBundle() throws -> [PaintingGemini] {
-        guard let url = Bundle.main.url(
-            forResource: "PaintingGemini",
-            withExtension: "json"
-        ) else {
-            throw NSError(
-                domain: "PaintingGeminiLoader",
-                code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "PaintingsGemini.json not found in Bundle"]
-            )
-        }
+    static func loadFromBundle() async throws -> [PaintingGemini] {
+        try await Task.detached(priority: .userInitiated) {
+            guard let url = Bundle.main.url(
+                forResource: "PaintingGemini",
+                withExtension: "json"
+            ) else {
+                throw NSError(
+                    domain: "PaintingGeminiLoader",
+                    code: 1,
+                    userInfo: [NSLocalizedDescriptionKey: "PaintingsGemini.json not found in Bundle"]
+                )
+            }
 
-        let data = try Data(contentsOf: url)
-
-        let decoder = JSONDecoder()
-        return try decoder.decode([PaintingGemini].self, from: data)
+            let data = try Data(contentsOf: url)
+            let decoder = JSONDecoder()
+            return try decoder.decode([PaintingGemini].self, from: data)
+        }.value
     }
 }
 
@@ -35,9 +36,14 @@ final class PaintingsGeminiViewModel {
             // debounce 300ms
             searchDebounceTask?.cancel()
             searchDebounceTask = Task { [searchText] in
-                try? await Task.sleep(for: .milliseconds(300))
-                await MainActor.run {
+                do {
+                    try await Task.sleep(for: .milliseconds(300))
+                    guard !Task.isCancelled else { return }
                     self.debouncedSearchText = searchText
+                } catch is CancellationError {
+                    return
+                } catch {
+                    return
                 }
             }
         }
@@ -59,12 +65,14 @@ final class PaintingsGeminiViewModel {
 
     init() {
         ImageStringCache.shared.clearCache()
-        load()
+        Task {
+            await load()
+        }
     }
 
-    func load() {
+    func load() async {
         do {
-            paintings = try PaintingsGeminiLoader.loadFromBundle()
+            paintings = try await PaintingsGeminiLoader.loadFromBundle()
         } catch {
             print("Failed to load paintingsGemini:", error)
         }
@@ -94,4 +102,3 @@ final class PaintingsGeminiViewModel {
         }
     }
 }
-
