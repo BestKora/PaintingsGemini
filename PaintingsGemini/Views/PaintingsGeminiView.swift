@@ -17,6 +17,7 @@ struct PaintingsGeminiView: View {
         VStack {
             let artists = viewModel.filteredArtists(searchText: viewModel.debouncedSearchText)
             let paintings = viewModel.filteredPaintings(selectedArtist: viewModel.selectedArtist)
+            let artistNames = Set(artists.map(\.name))
 
             Text("Choose the artist to fetch paintings from local DB.")
             TextField("Search artist", text: $viewModel.searchText, axis: .vertical)
@@ -32,7 +33,8 @@ struct PaintingsGeminiView: View {
                     }
                 }
             
-            if artists.map({ $0.name }).contains(viewModel.selectedArtist) {
+          //  if artists.map({ $0.name }).contains(viewModel.selectedArtist) {
+            if artistNames.contains(viewModel.selectedArtist) {
                 ArtistPickerView(filteredArtists: artists, selectedArtist: $viewModel.selectedArtist)
             } else {
                 Text(viewModel.selectedArtist)

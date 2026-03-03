@@ -95,8 +95,11 @@ final class PaintingsGeminiViewModel {
     // In PaintingsGeminiViewModel
     func ensureValidSelection() {
         let currentArtists = filteredArtists(searchText: debouncedSearchText)
+        let currentArtistNames = Set(currentArtists.map(\.name))
+
         if !currentArtists.isEmpty,
-           !currentArtists.map(\.name).contains(selectedArtist),
+    //       !currentArtists.map(\.name).contains(selectedArtist),
+           !currentArtistNames.contains(selectedArtist),
            let first = currentArtists.first {
             selectedArtist = first.name
         }
