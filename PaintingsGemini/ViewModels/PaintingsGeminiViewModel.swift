@@ -31,23 +31,6 @@ enum PaintingsGeminiLoader {
 @Observable @MainActor
 final class PaintingsGeminiViewModel {
     var paintings: [PaintingGemini] = []
-    var searchText: String = "" {
-        didSet {
-            // debounce 300ms
-            searchDebounceTask?.cancel()
-            searchDebounceTask = Task { [searchText] in
-                do {
-                    try await Task.sleep(for: .milliseconds(300))
-                    guard !Task.isCancelled else { return }
-                    self.debouncedSearchText = searchText
-                } catch is CancellationError {
-                    return
-                } catch {
-                    return
-                }
-            }
-        }
-    }
     var selectedArtist: String = ""
     var artists: [String] {
         Array(Set(paintings.map { $0.artist }))
@@ -58,10 +41,6 @@ final class PaintingsGeminiViewModel {
         }.map { ArtistItem(name: $0.key, count: $0.value) }
             .sorted { $0.name < $1.name }
     }
-
-    // Debounced search support
-    var debouncedSearchText: String = ""
-    private var searchDebounceTask: Task<Void, Never>? = nil
 
     init() {
         ImageStringCache.shared.clearCache()
@@ -78,27 +57,18 @@ final class PaintingsGeminiViewModel {
         }
     }
     
-    func filteredArtists(searchText: String) -> [ArtistItem] {
-        if searchText.isEmpty {
-            return artistItems
-        }
-        return artistItems.filter { $0.name.localizedStandardContains(searchText) }
-    }
-
     func filteredPaintings(selectedArtist: String) -> [PaintingGemini] {
         if selectedArtist.isEmpty {
             return paintings
         }
         return paintings.filter { $0.artist == selectedArtist }
     }
-    
-    // In PaintingsGeminiViewModel
+
     func ensureValidSelection() {
-        let currentArtists = filteredArtists(searchText: debouncedSearchText)
+        let currentArtists = artistItems
         let currentArtistNames = Set(currentArtists.map(\.name))
 
         if !currentArtists.isEmpty,
-    //       !currentArtists.map(\.name).contains(selectedArtist),
            !currentArtistNames.contains(selectedArtist),
            let first = currentArtists.first {
             selectedArtist = first.name
