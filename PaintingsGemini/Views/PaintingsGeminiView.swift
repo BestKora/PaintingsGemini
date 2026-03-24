@@ -9,12 +9,9 @@ import SwiftUI
 
 struct PaintingsGeminiView: View {
     @Bindable var viewModel: PaintingsGeminiViewModel
-  //  @Environment(\.viewModel) private var viewModel
     @State private var isArtistSheetPresented = false
 
     var body: some View {
-        @Bindable var bindableViewModel = viewModel
-
         VStack {
             let paintings = viewModel.filteredPaintings(selectedArtist: viewModel.selectedArtist)
 
@@ -58,7 +55,10 @@ struct PaintingsGeminiView: View {
             viewModel.ensureValidSelection()
         }
         .sheet(isPresented: $isArtistSheetPresented) {
-            ArtistPickerView(filteredArtists: viewModel.artistItems, selectedArtist: $viewModel.selectedArtist)
+            ArtistPickerView(
+                filteredArtists: viewModel.artistItems,
+                selectedArtist: $viewModel.selectedArtist
+            )
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }

@@ -9,9 +9,7 @@ import SwiftUI
 
 struct TitlePaintingsView: View {
     var isSelected: Bool
-    
-   // @Bindable var viewModel: PaintingsGeminiViewModel
-    @Environment(\.viewModel) private var viewModel
+    let viewModel: PaintingsGeminiViewModel
     @State private var titleQuery = ""
     @FocusState private var isTitleFieldFocused: Bool
 
@@ -59,5 +57,5 @@ struct TitlePaintingsView: View {
 }
 
 #Preview {
-    TitlePaintingsView(isSelected: true)
+    TitlePaintingsView(isSelected: true, viewModel: PaintingsGeminiViewModel())
 }

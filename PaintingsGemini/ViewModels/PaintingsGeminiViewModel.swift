@@ -32,9 +32,13 @@ enum PaintingsGeminiLoader {
 final class PaintingsGeminiViewModel {
     var paintings: [PaintingGemini] = []
     var selectedArtist: String = ""
+    
+    private var hasLoadedPaintings = false
+    
     var artists: [String] {
         Array(Set(paintings.map { $0.artist }))
     }
+    
     var artistItems: [ArtistItem] {
         paintings.reduce(into: [:]) { result, painting in
             result[painting.artist, default: 0] += 1
@@ -42,19 +46,21 @@ final class PaintingsGeminiViewModel {
             .sorted { $0.name < $1.name }
     }
 
-    init() {
-        ImageStringCache.shared.clearCache()
-        Task {
-            await load()
-        }
-    }
-
     func load() async {
         do {
             paintings = try await PaintingsGeminiLoader.loadFromBundle()
+            hasLoadedPaintings = true
         } catch {
             print("Failed to load paintingsGemini:", error)
         }
+    }
+
+    func loadIfNeeded() async {
+        guard !hasLoadedPaintings else {
+            return
+        }
+        await load()
+        ImageStringCache.shared.clearCache()
     }
     
     func filteredPaintings(selectedArtist: String) -> [PaintingGemini] {
@@ -76,6 +82,3 @@ final class PaintingsGeminiViewModel {
     }
 }
 
-extension EnvironmentValues {
-    @Entry var viewModel = PaintingsGeminiViewModel()
-}
