@@ -29,6 +29,7 @@ struct ArtistPickerView: View {
                             HStack {
                                 Text(artist.name)
                                 Spacer()
+                                Text("\(artist.count)")
                                 if artist.name == selectedArtist {
                                     Image(systemName: "checkmark")
                                         .foregroundStyle(.secondary)

@@ -9,11 +9,12 @@ import SwiftUI
 
 @main
 struct PaintingsGeminiApp: App {
-    @State private var viewModel = PaintingsGeminiViewModel()
+  //  @State private var viewModel = PaintingsGeminiViewModel()
 
     var body: some Scene {
         WindowGroup {
-            MostPaintingsView(viewModel: viewModel)
+          //  MostPaintingsView(viewModel: viewModel)
+            MostPaintingsView()
         }
     }
 }

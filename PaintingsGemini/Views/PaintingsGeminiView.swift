@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct PaintingsGeminiView: View {
-    var isSelected: Bool
-    
     @Bindable var viewModel: PaintingsGeminiViewModel
+  //  @Environment(\.viewModel) private var viewModel
     @State private var isArtistSheetPresented = false
 
     var body: some View {
+        @Bindable var bindableViewModel = viewModel
+
         VStack {
             let paintings = viewModel.filteredPaintings(selectedArtist: viewModel.selectedArtist)
 
@@ -61,14 +62,9 @@ struct PaintingsGeminiView: View {
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
-        .onChange(of: isSelected) { _, newValue in
-            if newValue {
-                isArtistSheetPresented = true
-            }
-        }
     }
 }
 
 #Preview {
-    PaintingsGeminiView(isSelected: true, viewModel: PaintingsGeminiViewModel())
+    PaintingsGeminiView(viewModel: PaintingsGeminiViewModel())
 }

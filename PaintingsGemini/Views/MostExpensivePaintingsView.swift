@@ -7,7 +7,8 @@
 import SwiftUI
 
 struct MostExpensivePaintingsView: View {
-    @Bindable var viewModel: PaintingsGeminiViewModel
+   // @Bindable var viewModel: PaintingsGeminiViewModel
+    @Environment(\.viewModel) private var viewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -38,5 +39,5 @@ struct MostExpensivePaintingsView: View {
 }
 
 #Preview {
-    MostExpensivePaintingsView (viewModel: PaintingsGeminiViewModel())
+    MostExpensivePaintingsView ()
 }

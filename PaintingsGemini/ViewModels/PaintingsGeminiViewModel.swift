@@ -75,3 +75,7 @@ final class PaintingsGeminiViewModel {
         }
     }
 }
+
+extension EnvironmentValues {
+    @Entry var viewModel = PaintingsGeminiViewModel()
+}
