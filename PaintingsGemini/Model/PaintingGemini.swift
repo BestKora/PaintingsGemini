@@ -40,20 +40,6 @@ struct PaintingGemini: Decodable, Identifiable, Equatable , Art {
      URL(string: imageURL)
     }
     
-  /*  var cost: Int {
-        let formatter = NumberFormatter()
-        let usLocale = Locale(identifier: "en_US")
-        formatter.numberStyle = .currency
-        formatter.locale = usLocale
-     
-        if let range = estimateValue.range(of: "Million") {
-            let beforeMillion = estimateValue[..<range.lowerBound].trimmingCharacters(in: .whitespaces)
-            let usCurrency = formatter.number(from: beforeMillion) ?? 0.0
-            return Int(truncating: usCurrency)
-        }
-       return 0
-    }*/
-    
     var cost: Int {
         let normalized = estimateValue
             .replacing(",", with: "")

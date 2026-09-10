@@ -57,7 +57,8 @@
     "period": "Art Nouveau",
     "location": "Österreichische Galerie Belvedere, Vienna",
     "estimated_value": "Priceless",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Klimt_-_The_Kiss.jpg/2003px-Klimt_-_The_Kiss.jpg"
+    "image_url":
+    "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg/960px-The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
   },
   {
     "title": "Girl with a Pearl Earring",
@@ -3817,14 +3818,14 @@
               "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/August_Macke_005.jpg/960px-August_Macke_005.jpg"
             },
             {
-                "title": "Rouen Cathedral, West Portal, Dull Weather",
+                "title": "The Portal of Rouen Cathedral in Morning Light",
                 "artist": "Claude Monet",
-                "year": "1892",
+                "year": "1894",
                 "style": "Impressionism",
                 "period": "Impressionism",
-                "location": "Musée d'Orsay, Paris",
+                "location": "Getty Center, Los Angeles",
                 "estimated_value": "Priceless",
-                "image_url": "https://www.monetpaintings.org/Rouen%20Cathedral,%20the%20West%20Portal,%20Dull%20Weather%20Claude%20Monet.jpg"
+                "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Claude_Monet_%28French_-_The_Portal_of_Rouen_Cathedral_in_Morning_Light_-_Google_Art_Project.jpg/500px-Claude_Monet_%28French_-_The_Portal_of_Rouen_Cathedral_in_Morning_Light_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
               },
               {
                 "title": "The Floor Scrapers",
