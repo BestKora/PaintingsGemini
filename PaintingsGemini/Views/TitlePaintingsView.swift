@@ -57,5 +57,9 @@ struct TitlePaintingsView: View {
 }
 
 #Preview {
-    TitlePaintingsView(isSelected: true, viewModel: PaintingsGeminiViewModel())
+    @Previewable @State var viewModel = PaintingsGeminiViewModel()
+    TitlePaintingsView(isSelected: true, viewModel: viewModel)
+        .task {
+            await viewModel.loadIfNeeded()
+        }
 }

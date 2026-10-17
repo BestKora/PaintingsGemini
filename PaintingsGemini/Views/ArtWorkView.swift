@@ -46,7 +46,7 @@ struct ArtWorkView: View {
                         case .success(let image):
                             image
                                 .resizable()
-                                .scaledToFill()
+                                .scaledToFit() // scaledToFill()
                                 .clipped()
                                 .clipShape(.rect(cornerRadius: 8))
                                 .onAppear {
@@ -77,4 +77,18 @@ struct ArtWorkView: View {
             }
         }
     }
+}
+
+#Preview {
+    @Previewable @State var viewModel = PaintingsGeminiViewModel()
+    ArtWorkView( painting: PaintingGemini(
+        title: "Carnation, Lily, Lily, Rose",
+        artist: "John Singer Sargent",
+        year: "1885–1886",
+        style: "Impressionism",
+        period: "Modern Era",
+        location: "Tate Britain, London",
+        estimateValue: "Priceless",
+        imageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/John_Singer_Sargent_-_Carnation%2C_Lily%2C_Lily%2C_Rose_-_Google_Art_Project.jpg/960px-John_Singer_Sargent_-_Carnation%2C_Lily%2C_Lily%2C_Rose_-_Google_Art_Project.jpg") )
+    .padding()
 }

@@ -38,5 +38,9 @@ struct MostExpensivePaintingsView: View {
 }
 
 #Preview {
-    MostExpensivePaintingsView(viewModel: PaintingsGeminiViewModel())
+    @Previewable @State var viewModel = PaintingsGeminiViewModel()
+    MostExpensivePaintingsView(viewModel: viewModel)
+        .task {
+            await viewModel.loadIfNeeded()
+        }
 }

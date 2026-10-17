@@ -66,5 +66,9 @@ struct PaintingsGeminiView: View {
 }
 
 #Preview {
-    PaintingsGeminiView(viewModel: PaintingsGeminiViewModel())
+    @Previewable @State var viewModel = PaintingsGeminiViewModel()
+    PaintingsGeminiView(viewModel: viewModel)
+        .task {
+            await viewModel.loadIfNeeded()
+        }
 }
