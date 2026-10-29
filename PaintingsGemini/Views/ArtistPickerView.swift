@@ -12,6 +12,7 @@ struct ArtistPickerView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
+    @FocusState private var isSearchFocused: Bool
 
     var body: some View {
         NavigationStack {
@@ -51,6 +52,7 @@ struct ArtistPickerView: View {
                     TextField("Search artist", text: $searchText)
                         .textInputAutocapitalization(.words)
                         .autocorrectionDisabled()
+                        .focused($isSearchFocused)
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 12)
@@ -58,10 +60,24 @@ struct ArtistPickerView: View {
                     RoundedRectangle(cornerRadius: 24)
                         .stroke(.primary, lineWidth: 1)
                 }
+                .contentShape(RoundedRectangle(cornerRadius: 24)) // makes the empty areas hit-testable
+                    .onTapGesture {
+                        isSearchFocused = true
+                    }
                 .padding(.horizontal)
                 .padding(.top)
                 .background(.background)
+                .task {
+                    isSearchFocused = true
+                }
             }
         }
     }
+}
+
+#Preview {
+    @Previewable @State var viewModel = PaintingsGeminiViewModel()
+    ArtistPickerView(filteredArtists: viewModel.artistItems, selectedArtist: $viewModel.selectedArtist)
+    
+    .padding()
 }

@@ -8,6 +8,8 @@ import SwiftUI
 
 struct MostExpensivePaintingsView: View {
     let viewModel: PaintingsGeminiViewModel
+    //------
+    let cache: ImageCache
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -16,8 +18,8 @@ struct MostExpensivePaintingsView: View {
                 .padding(.horizontal)
             List (topPaintings) { painting in
                 VStack {
-                    ArtWorkView(painting: painting)
-                  //  Text("Estimated value: \(painting.estimateValue)")
+                  //  ArtWorkView(painting: painting)
+                    ArtWorkViewService(painting: painting, cache: cache)
                     Text("Estimated value: \(painting.costString)")
                         .font(.headline)
                         .foregroundStyle(.blue)
@@ -39,7 +41,8 @@ struct MostExpensivePaintingsView: View {
 
 #Preview {
     @Previewable @State var viewModel = PaintingsGeminiViewModel()
-    MostExpensivePaintingsView(viewModel: viewModel)
+    @Previewable @State var cache = ImageCache()
+    MostExpensivePaintingsView(viewModel: viewModel, cache: cache)
         .task {
             await viewModel.loadIfNeeded()
         }

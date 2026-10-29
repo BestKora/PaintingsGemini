@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 // Singleton memory cache with String
-class ImageStringCache {
+final class ImageStringCache {
     static let shared = ImageStringCache()
     let cache = NSCache<NSString, UIImage>()
     
@@ -23,7 +23,6 @@ class ImageStringCache {
     // MARK: - Clear the entire cache
      func clearCache() {
             cache.removeAllObjects()
-           // print("Image cache cleared – all images removed from memory")
         }
         
         // Optional: Clear only one specific image

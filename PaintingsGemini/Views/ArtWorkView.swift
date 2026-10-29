@@ -29,7 +29,7 @@ struct ArtWorkView: View {
                     .foregroundStyle(.secondary)
             }
             let cacheKey = painting.title + painting.artist
-            if let url = URL(string: painting.imageURL)/*painting.URLImage*/ {
+            if let url = URL(string: painting.imageURL) {
                 if let cached = ImageStringCache.shared.image(for: cacheKey) {
                     Text("--- Cached Image ---")
                     Image(uiImage: cached)
@@ -89,6 +89,6 @@ struct ArtWorkView: View {
         period: "Modern Era",
         location: "Tate Britain, London",
         estimateValue: "Priceless",
-        imageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/John_Singer_Sargent_-_Carnation%2C_Lily%2C_Lily%2C_Rose_-_Google_Art_Project.jpg/960px-John_Singer_Sargent_-_Carnation%2C_Lily%2C_Lily%2C_Rose_-_Google_Art_Project.jpg") )
+        imageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/John_Singer_Sargent_-_Carnation%2C_Lily%2C_Lily%2C_Rose_-_Google_Art_Project.jpg/960px-John_Singer_Sargent_-_Carnation%2C_Lily%2C_Lily%2C_Rose_-_Google_Art_Project.jpg"))
     .padding()
 }

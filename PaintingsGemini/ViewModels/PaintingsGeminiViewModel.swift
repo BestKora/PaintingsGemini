@@ -7,24 +7,22 @@
 
 import SwiftUI
 
-enum PaintingsGeminiLoader {
-    static func loadFromBundle() async throws -> [PaintingGemini] {
-        try await Task.detached(priority: .userInitiated) {
-            guard let url = Bundle.main.url(
-                forResource: "PaintingGemini",
-                withExtension: "json"
-            ) else {
-                throw NSError(
-                    domain: "PaintingGeminiLoader",
-                    code: 1,
-                    userInfo: [NSLocalizedDescriptionKey: "PaintingsGemini.json not found in Bundle"]
-                )
-            }
+nonisolated struct PaintingsGeminiLoader {
 
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            return try decoder.decode([PaintingGemini].self, from: data)
-        }.value
+    @concurrent
+    static func loadFromBundle() async throws -> [PaintingGemini] {
+        guard let url = Bundle.main.url(
+            forResource: "PaintingGemini",
+            withExtension: "json"
+        ) else {
+            throw CocoaError(.fileNoSuchFile)
+        }
+
+        let data = try Data(contentsOf: url)
+        return try JSONDecoder().decode(
+            [PaintingGemini].self,
+            from: data
+        )
     }
 }
 

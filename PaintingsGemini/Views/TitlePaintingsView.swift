@@ -12,7 +12,9 @@ struct TitlePaintingsView: View {
     let viewModel: PaintingsGeminiViewModel
     @State private var titleQuery = ""
     @FocusState private var isTitleFieldFocused: Bool
-
+    //------
+    let cache: ImageCache
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Filter paintings by title.")
@@ -29,7 +31,8 @@ struct TitlePaintingsView: View {
                 ContentUnavailableView("No paintings", systemImage: "photo.on.rectangle.angled", description: Text("Try another search or clear search"))
             } else {
                 List(filteredPaintings) { painting in
-                    ArtWorkView(painting: painting)
+                  //  ArtWorkView(painting: painting)
+                    ArtWorkViewService(painting: painting, cache: cache)
                 }
             }
         }
@@ -58,8 +61,11 @@ struct TitlePaintingsView: View {
 
 #Preview {
     @Previewable @State var viewModel = PaintingsGeminiViewModel()
-    TitlePaintingsView(isSelected: true, viewModel: viewModel)
+    @Previewable @State var cache = ImageCache()
+    TitlePaintingsView(isSelected: true, viewModel: viewModel, cache: cache)
+        .padding(10)
         .task {
             await viewModel.loadIfNeeded()
         }
+       
 }

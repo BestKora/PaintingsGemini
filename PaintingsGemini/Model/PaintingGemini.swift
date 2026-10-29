@@ -8,7 +8,7 @@ import Foundation
 import FoundationModels
 
 @Generable
-struct PaintingGemini: Decodable, Identifiable, Equatable, Art, Sendable {
+struct PaintingGemini: Decodable, Identifiable, Equatable, Art/*, Sendable */{
     
   let title: String
   let artist: String

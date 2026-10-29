@@ -10,7 +10,9 @@ import SwiftUI
 struct PaintingsGeminiView: View {
     @Bindable var viewModel: PaintingsGeminiViewModel
     @State private var isArtistSheetPresented = false
-
+    //------
+    let cache: ImageCache
+    
     var body: some View {
         VStack {
             let paintings = viewModel.filteredPaintings(selectedArtist: viewModel.selectedArtist)
@@ -40,7 +42,8 @@ struct PaintingsGeminiView: View {
                 ContentUnavailableView("No paintings", systemImage: "photo.on.rectangle.angled", description: Text("Try another artist or clear search"))
             } else {
                 List(paintings) { painting in
-                    ArtWorkView(painting: painting)
+                     ArtWorkViewService(painting: painting, cache: cache)
+                //   ArtWorkView(painting: painting)
                 }
             }
         }
@@ -67,8 +70,10 @@ struct PaintingsGeminiView: View {
 
 #Preview {
     @Previewable @State var viewModel = PaintingsGeminiViewModel()
-    PaintingsGeminiView(viewModel: viewModel)
+    @Previewable @State var cache = ImageCache()
+    PaintingsGeminiView(viewModel: viewModel, cache: cache)
         .task {
             await viewModel.loadIfNeeded()
         }
+        .padding()
 }
